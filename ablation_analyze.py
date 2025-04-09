@@ -3,7 +3,7 @@ import cv2
 
 folder_path = 'dataset/image/t1'
 imgs = []
-image_list = os.listdir(folder_path).sort(key=lambda x: int(x.split('-')[1].split('_')[0]))
+image_list = os.listdir(folder_path).sort(key=lambda x: int(x.split('_')[1]))
 for filename in os.listdir(folder_path):
     if filename.endswith('.tif'):
         image_name = os.path.join(folder_path, filename)
