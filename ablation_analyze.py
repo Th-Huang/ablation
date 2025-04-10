@@ -1,4 +1,3 @@
-import glob
 import os
 import cv2
 import pandas as pd
@@ -22,9 +21,6 @@ def read_image(image_path):
             imgs_r.append(img)
     return imgs_l, imgs_r
 
-
-
-
 imgs_l, imgs_r = read_image(image_path)
 print("Left images:", len(imgs_l))
 print("Left images:", imgs_l[0].shape)
@@ -46,4 +42,3 @@ data = read_data(data_path)
 print("Data length:", len(data))
 for i in range(len(data)):
     print(data[i].shape)
-# print(data)
