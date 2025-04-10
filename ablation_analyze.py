@@ -27,21 +27,23 @@ def read_image(image_path):
 
 imgs_l, imgs_r = read_image(image_path)
 print("Left images:", len(imgs_l))
+print("Left images:", imgs_l[0].shape)
 print("Right images:", len(imgs_r))
+print("Right images:", imgs_r[0].shape)
 
 def read_data(data_path):
     data_list = os.listdir(data_path)
     data_list.sort(key=lambda x: int(x.replace('t1_', '').split('_')[0]))
-    data = []
+    datas = []
     for filename in data_list:
         if filename.endswith('.csv'):
             data_name = os.path.join(data_path, filename)
-            with open(data_name, 'r') as f:
-                lines = f.readlines()
-                for line in lines:
-                    line = line.strip().split(' ')
-                    data.append(line)
-    return data
+            data_df = pd.read_csv(data_name,header=1,index_col=0)
+            data = data_df.values
+            datas.append(data)
+    return datas
 data = read_data(data_path)
 print("Data length:", len(data))
-print(data)
+for i in range(len(data)):
+    print(data[i].shape)
+# print(data)
