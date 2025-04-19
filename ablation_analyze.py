@@ -51,8 +51,12 @@ for i in range(len(data)):
     img_l = []
     img_r = []
     for j in range(len(XY)):
-        img_l.append(img1[int(XY[j][0]), int(XY[j][1])])
-        img_r.append(img2[int(XY[j][0]), int(XY[j][1])])
+        datal = [int(XY[j][0]),int(XY[j][1]),int(img1[int(XY[j][0]), int(XY[j][1])])]
+        datar = [int(XY[j][0]),int(XY[j][1]),int(img2[int(XY[j][0]), int(XY[j][1])])]
+        img_l.append(datal)
+        img_r.append(datar)
+    img_l = np.array(img_l)
+    img_r = np.array(img_r)
     imge_ldata.append(img_l)
     imge_rdata.append(img_r)
 
