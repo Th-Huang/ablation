@@ -31,16 +31,20 @@ print("Right images:", imgs_r[0].shape)
 def read_data(data_path):
     data_list = os.listdir(data_path)
     data_list.sort(key=lambda x: int(x.replace('t1_', '').split('_')[0]))
-    datas = []
+    all_data = []
+    datas_strain = []
     for filename in data_list:
         if filename.endswith('.csv'):
             data_name = os.path.join(data_path, filename)
             data_df = pd.read_csv(data_name,header=1)
-            data = data_df.values
-            datas.append(data)
-    return datas
-data = read_data(data_path)
+            data = np.array(data_df.values)
+            data_strain = data[:,6:9]
+            datas_strain.append(data_strain)
+            all_data.append(data)
+    return all_data,datas_strain
+data, data_strain = read_data(data_path)
 print("Data length:", len(data))
+print("Data strain shape:", data_strain[0].shape)
 imge_ldata = []
 imge_rdata = []
 for i in range(len(data)):
