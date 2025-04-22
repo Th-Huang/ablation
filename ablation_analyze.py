@@ -45,10 +45,13 @@ def available_image(imgs_l, imgs_r,data):
     outputstrain = []
     for i in range(len(data)):
         file = np.array(data[i])
-        # for j in range(file.shape[0]):
-        #     if file[j][0] == 0 and file[j][1] == 0 and file[j][2] == 0:
-        #         #delete the row
-        #         file = np.delete(file, j, axis=0)
+        number = file.shape[0]
+        t=0
+        for j in range(number):
+            if file[t][0] == 0 and file[t][1] == 0 and file[t][2] == 0:
+                file = np.delete(file, t, axis=0)
+            else:
+                t+=1
         XY = file[:,13:15]
         X_max = int(np.max(XY[:,0]))
         X_min = int(np.min(XY[:,0]))
@@ -61,9 +64,9 @@ def available_image(imgs_l, imgs_r,data):
         img1 = img1[X_min:X_max+1, Y_min:Y_max+1]
         img2 = img2[X_min:X_max+1, Y_min:Y_max+1]
 
-        img_l = np.zeros((img1.shape[0], img1.shape[1], 1), dtype=np.uint8)
-        img_r = np.zeros((img2.shape[0], img2.shape[1], 1), dtype=np.uint8)
-        outstrain = np.zeros((img1.shape[0], img1.shape[1], 3), dtype=np.uint8)
+        img_l = np.zeros((img1.shape[0], img1.shape[1], 1))
+        img_r = np.zeros((img2.shape[0], img2.shape[1], 1))
+        outstrain = np.zeros((img1.shape[0], img1.shape[1], 3))
         for j in range(len(XY)):
             x = int(XY[j][0])
             y = int(XY[j][1])

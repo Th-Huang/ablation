@@ -78,8 +78,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train UNet model')
     parser.add_argument('--image_path', type=str, default='dataset/image/t1', help='Path to the images')
     parser.add_argument('--data_path', type=str, default='dataset/data/t1', help='Path to the data')
-    parser.add_argument('--batch_size', type=int, default=8, help='Batch size for training')
-    parser.add_argument('--num_epochs', type=int, default=10, help='Number of epochs for training')
+    parser.add_argument('--batch_size', type=int, default=4, help='Batch size for training')
+    parser.add_argument('--num_epochs', type=int, default=50, help='Number of epochs for training')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='Learning rate for optimizer')
     args = parser.parse_args()
 
