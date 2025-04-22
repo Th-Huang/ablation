@@ -45,6 +45,10 @@ def available_image(imgs_l, imgs_r,data):
     outputstrain = []
     for i in range(len(data)):
         file = np.array(data[i])
+        # for j in range(file.shape[0]):
+        #     if file[j][0] == 0 and file[j][1] == 0 and file[j][2] == 0:
+        #         #delete the row
+        #         file = np.delete(file, j, axis=0)
         XY = file[:,13:15]
         X_max = int(np.max(XY[:,0]))
         X_min = int(np.min(XY[:,0]))
@@ -101,21 +105,21 @@ def CustomDataset(imge_ldata, imge_rdata, data_strain):
     return CustomDataset(imge_ldata, imge_rdata, data_strain)
 
 
-# imgs_l, imgs_r = read_image(image_path)
-# print("Data length:", len(imgs_l))
-# print("Data strain shape:", imgs_l[0].shape)
-#
-# data, data_strain = read_data(data_path)
-# print("Data length:", len(data))
-# print("Data strain shape:", data_strain[0].shape)
-# data1 = np.array(data)
-# print("Data shape:", data1.shape)
-# X = data1[:,:,13]
-# Y = data1[:,:,14]
-#
-# print('X max',np.max(X))
-# print('X min',np.min(X))
-# print('Y max',np.max(Y))
-# print('Y min',np.min(Y))
-#
-# imge_ldata, imge_rdata, outputstrain = available_image(imgs_l, imgs_r,data)
+imgs_l, imgs_r = read_image(image_path)
+print("Data length:", len(imgs_l))
+print("Data strain shape:", imgs_l[0].shape)
+
+data, data_strain = read_data(data_path)
+print("Data length:", len(data))
+print("Data strain shape:", data_strain[0].shape)
+data1 = np.array(data)
+print("Data shape:", data1.shape)
+X = data1[:,:,13]
+Y = data1[:,:,14]
+
+print('X max',np.max(X))
+print('X min',np.min(X))
+print('Y max',np.max(Y))
+print('Y min',np.min(Y))
+
+imge_ldata, imge_rdata, outputstrain = available_image(imgs_l, imgs_r,data)
