@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import pandas as pd
 import torch
+import gc
+
 
 image_path = 'dataset/image/t1'
 data_path = 'dataset/data/t1'
@@ -21,6 +23,10 @@ def read_image(image_path):
             image_name = os.path.join(image_path, filename)
             img = cv2.imread(image_name,2)
             imgs_r.append(img)
+
+    del img
+    del image_list
+    gc.collect()
     return imgs_l, imgs_r
 
 def read_data(data_path):
@@ -37,6 +43,10 @@ def read_data(data_path):
             datas_strain.append(data_strain)
             all_data.append(data)
     datas_strain = np.array(datas_strain)
+
+    del data_df
+    del data
+    gc.collect()
     return all_data,datas_strain
 
 def available_image(imgs_l, imgs_r,data):
@@ -46,12 +56,13 @@ def available_image(imgs_l, imgs_r,data):
     for i in range(len(data)):
         file = np.array(data[i])
         number = file.shape[0]
-        t=0
+        t = 0
         for j in range(number):
             if file[t][0] == 0 and file[t][1] == 0 and file[t][2] == 0:
                 file = np.delete(file, t, axis=0)
             else:
                 t+=1
+        print("data file shape:", file.shape)
         XY = file[:,13:15]
         X_max = int(np.max(XY[:,0]))
         X_min = int(np.min(XY[:,0]))
@@ -64,8 +75,6 @@ def available_image(imgs_l, imgs_r,data):
         img1 = img1[X_min:X_max+1, Y_min:Y_max+1]
         img2 = img2[X_min:X_max+1, Y_min:Y_max+1]
 
-        img_l = np.zeros((img1.shape[0], img1.shape[1], 1))
-        img_r = np.zeros((img2.shape[0], img2.shape[1], 1))
         outstrain = np.zeros((img1.shape[0], img1.shape[1], 3))
         for j in range(len(XY)):
             x = int(XY[j][0])
@@ -73,13 +82,11 @@ def available_image(imgs_l, imgs_r,data):
             if x<X_min or x>X_max or y<Y_min or y > Y_max:
                 print("Invalid coordinates:", x, y)
                 continue
-            img_l[x-X_min][y-Y_min]=int(img1[x-X_min,y-Y_min])
-            img_r[x-X_min][y-Y_min]=int(img2[x-X_min,y-Y_min])
             outstrain[x-X_min][y-Y_min][0]=int(strain[j][0])
             outstrain[x-X_min][y-Y_min][1]=int(strain[j][1])
             outstrain[x-X_min][y-Y_min][2]=int(strain[j][2])
-        img_l = np.array(img_l)
-        img_r = np.array(img_r)
+        img_l = np.array(img1)
+        img_r = np.array(img2)
         outstrain = np.array(outstrain)
 
         imge_ldata.append(img_l)
@@ -89,6 +96,11 @@ def available_image(imgs_l, imgs_r,data):
     imge_rdata = np.array(imge_rdata)
     imge_ldata = np.array(imge_ldata)
     outputstrain = np.array(outputstrain)
+
+    del imgs_l
+    del imgs_r
+    del data
+    gc.collect()
 
     return imge_ldata, imge_rdata,outputstrain
 
@@ -109,20 +121,22 @@ def CustomDataset(imge_ldata, imge_rdata, data_strain):
 
 
 imgs_l, imgs_r = read_image(image_path)
-print("Data length:", len(imgs_l))
-print("Data strain shape:", imgs_l[0].shape)
+# print("Data length:", len(imgs_l))
+# print("Data strain shape:", imgs_l[0].shape)
 
 data, data_strain = read_data(data_path)
-print("Data length:", len(data))
-print("Data strain shape:", data_strain[0].shape)
+# print("Data length:", len(data))
+# print("Data strain shape:", data_strain[0].shape)
 data1 = np.array(data)
-print("Data shape:", data1.shape)
+# print("Data shape:", data1.shape)
 X = data1[:,:,13]
 Y = data1[:,:,14]
-
-print('X max',np.max(X))
-print('X min',np.min(X))
-print('Y max',np.max(Y))
-print('Y min',np.min(Y))
+#
+# print('X max',np.max(X))
+# print('X min',np.min(X))
+# print('Y max',np.max(Y))
+# print('Y min',np.min(Y))
 
 imge_ldata, imge_rdata, outputstrain = available_image(imgs_l, imgs_r,data)
+# print("Image data shape:", imge_ldata[0].shape)
+# print("Image data strain shape:", imge_ldata[0].shape)
